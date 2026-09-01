@@ -1,59 +1,92 @@
-# CRPC-lncRNA-WGCNA-Analysis-of-GSE74685
+# CRPC lncRNA WGCNA Analysis of GSE74685
 
-CRPC lncRNA WGCNA Analysis of GSE74685
+This repository provides an R-based workflow for differential-expression analysis and Weighted Gene Co-expression Network Analysis (WGCNA) of the `GSE74685` dataset.
 
-This repository contains an R-based workflow for differential-expression and weighted gene co-expression network analysis of the GSE74685 dataset. The workflow was developed in connection with the study of dysregulated long non-coding RNAs and epithelial–mesenchymal transition in castration-resistant prostate cancer.
+The workflow was developed in connection with a study investigating dysregulated long non-coding RNAs, metastatic progression, and epithelial–mesenchymal transition in castration-resistant prostate cancer.
 
-Reference article
+## Reference Article
 
-Mehrabi T, Heidarzadehpilehrood R, Mobasheri M, Sobati T, Heshmati M, Pirhoushiaran M. Dysregulated key long non-coding RNAs TP53TG1, RFPL1S, DLEU1, and HCG4 associated with epithelial-mesenchymal transition (EMT) in castration-resistant prostate cancer. Advances in Cancer Biology - Metastasis. 2025;13:100132.
+- Authors: Mehrabi T, Heidarzadehpilehrood R, Mobasheri M, Sobati T, Heshmati M, and Pirhoushiaran M
+- Title: Dysregulated key long non-coding RNAs TP53TG1, RFPL1S, DLEU1, and HCG4 associated with epithelial-mesenchymal transition (EMT) in castration-resistant prostate cancer
+- Journal: Advances in Cancer Biology - Metastasis
+- Year: 2025
+- Volume: 13
+- Article number: 100132
+- DOI: [10.1016/j.adcanc.2025.100132](https://doi.org/10.1016/j.adcanc.2025.100132)
 
-DOI: 10.1016/j.adcanc.2025.100132
+## Scientific Background
 
-Scientific background
+Castration-resistant prostate cancer is an advanced form of prostate cancer associated with disease progression, treatment resistance, and a high risk of metastasis.
 
-Castration-resistant prostate cancer is an advanced form of prostate cancer with a high risk of progression and metastasis. Long non-coding RNAs can contribute to cancer progression by affecting gene regulation, cellular plasticity, invasion, and epithelial–mesenchymal transition.
+Long non-coding RNAs may contribute to cancer progression by influencing:
 
-The reference article analyzed GSE74685 and reported four dysregulated lncRNAs:
+- gene-expression regulation;
+- epithelial–mesenchymal transition;
+- cellular plasticity;
+- tumor-cell migration;
+- invasion;
+- metastatic progression;
+- treatment resistance.
 
-TP53TG1
+The reference article analyzed the `GSE74685` dataset and reported four dysregulated lncRNAs:
 
-RFPL1S
+- `TP53TG1`
+- `RFPL1S`
+- `DLEU1`
+- `HCG4`
 
-DLEU1
+The reported co-expression analysis identified modules associated with these lncRNAs and highlighted biological processes relevant to metastatic CRPC, including:
 
-HCG4
+- epithelial–mesenchymal transition;
+- mesenchymal–epithelial transition;
+- purine metabolism;
+- transcriptional regulation;
+- immune-system processes.
 
-The reported co-expression analysis identified modules associated with these lncRNAs and highlighted pathways relevant to metastasis, including epithelial/mesenchymal transition, purine metabolism, transcriptional regulation, and immune-system processes. The article also reported SOD2, PRKCA, IL6, and ITGAM as hub-gene candidates.
+The study also reported the following hub-gene candidates:
 
-Aim of this repository
+- `SOD2`
+- `PRKCA`
+- `IL6`
+- `ITGAM`
 
-The pipeline provides a structured starting point to:
+## Aim of This Repository
 
-download and preprocess the GSE74685 expression dataset;
+This repository provides a structured computational workflow to:
 
-classify samples by metastatic site using GEO sample titles;
+- download the `GSE74685` dataset from the Gene Expression Omnibus;
+- extract the expression matrix and sample metadata;
+- classify samples according to metastatic site;
+- filter low-expression probes;
+- compare Bone and Visceral metastasis groups using `limma`;
+- construct a signed WGCNA co-expression network;
+- identify gene co-expression modules;
+- calculate module–trait correlations;
+- calculate module-membership values;
+- combine differential-expression results with WGCNA results;
+- identify candidate lncRNAs using compatible platform annotation.
 
-compare Bone and Visceral metastasis groups with limma;
+## Important Scope Note
 
-construct signed WGCNA co-expression modules;
+The current scripts perform a Bone-versus-Visceral comparison based on metastatic-site information inferred from GEO sample titles.
 
-calculate module–trait correlations;
+This workflow is an adaptation inspired by the reference article. It should not be described as an exact reproduction of every analysis reported in the paper.
 
-combine differential-expression statistics with module membership;
+The automatic sample-classification procedure searches the sample-title field for terms such as:
 
-extract candidate lncRNAs when compatible probe annotation is available.
+- `bone`
+- `visceral`
+- `liver`
+- `lymph`
 
-Important scope note
+Metastatic-site classifications must be manually verified against the original GEO metadata before interpreting the results.
 
-The present scripts perform a Bone-versus-Visceral comparison inferred from the GEO sample titles. This is an adaptation inspired by the reference article and should not be described as an exact reproduction of every analysis in the paper.
+## Repository Structure
 
-Metastatic-site labels should be manually checked before interpreting the results. The automatic grouping rules search the sample-title field for terms such as bone, visceral, liver, and lymph.
-
-Repository structure
-
-CRPC_lncRNA_WGCNA/
+```text
+CRPC-lncRNA-WGCNA-Analysis-of-GSE74685/
 ├── README.md
+├── LICENSE
 ├── scripts/
 │   ├── Script 01_load_packages.R
 │   ├── Script 02_download_preprocess_GSE74685.R
@@ -64,79 +97,120 @@ CRPC_lncRNA_WGCNA/
 ├── results/
 ├── figures/
 └── docs/
+```
 
-Requirements
+## Requirements
 
-R version 4.2 or newer is recommended.
+The following resources are recommended:
 
-Internet access is required for the first GEO download and package installation.
+- R version 4.2 or newer;
+- internet access for the initial package installation and GEO download;
+- sufficient memory for WGCNA network construction;
+- a compatible probe-annotation file for identifying lncRNAs.
 
-Sufficient memory is required for WGCNA network construction.
+## Required R Packages
 
-The workflow uses the following packages:
+### Bioconductor Packages
 
-Bioconductor: GEOquery, Biobase, and limma
+- `GEOquery`
+- `Biobase`
+- `limma`
 
-CRAN: WGCNA, dynamicTreeCut, and tidyverse
+### CRAN Packages
 
-Missing dependencies are installed automatically by Script 01.
+- `WGCNA`
+- `dynamicTreeCut`
+- `tidyverse`
 
-Running the workflow
+Missing dependencies are installed automatically by `Script 01_load_packages.R`.
 
-Start R from the repository root, not from the scripts directory. Run the scripts in numerical order:
+## Running the Workflow
 
+Start R or RStudio from the root directory of the repository.
+
+Do not set the `scripts` folder as the working directory.
+
+Run the scripts in numerical order:
+
+```r
 source("scripts/Script 01_load_packages.R")
 source("scripts/Script 02_download_preprocess_GSE74685.R")
 source("scripts/Script 03_DE_Bone_vs_Visceral.R")
 source("scripts/Script 04_WGCNA_modules_traits.R")
 source("scripts/Script 05_extract_lncRNA_candidates.R")
+```
 
-Pipeline stages
+## Pipeline Stages
 
-Stage 01: package setup
+### Stage 01: Package Setup
 
-Script 01_load_packages.R installs missing CRAN and Bioconductor packages, loads them, disables automatic string-to-factor conversion, and enables WGCNA multithreading where supported.
+The `Script 01_load_packages.R` script:
 
-Stage 02: download and preprocessing
+- installs missing CRAN packages;
+- installs missing Bioconductor packages;
+- loads the required packages;
+- disables automatic string-to-factor conversion;
+- enables WGCNA multithreading when supported.
 
-Script 02_download_preprocess_GSE74685.R:
+### Stage 02: GEO Download and Preprocessing
 
-downloads GSE74685 with GEOquery;
+The `Script 02_download_preprocess_GSE74685.R` script:
 
-extracts the expression matrix and phenotype table;
+- downloads `GSE74685` using `GEOquery`;
+- extracts the expression matrix;
+- extracts the phenotype and sample-metadata table;
+- aligns phenotype rows with expression-matrix columns;
+- derives the `site_group` variable;
+- classifies samples as Bone, Visceral, LymphNode, or Other;
+- filters low-expression probes;
+- saves the processed data in the `data` directory.
 
-aligns phenotype rows with expression columns;
+The default filtering rule retains probes with expression greater than `5` in at least 20% of samples.
 
-derives the site_group phenotype;
+### Stage 03: Differential-Expression Analysis
 
-retains probes with expression greater than 5 in at least 20% of samples;
+The `Script 03_DE_Bone_vs_Visceral.R` script:
 
-saves cached inputs in data/.
+- retains Bone and Visceral samples;
+- aligns expression data with phenotype information;
+- constructs the design matrix;
+- defines the `Bone - Visceral` contrast;
+- fits a linear model using `limma`;
+- applies empirical Bayes moderation;
+- generates a ranked differential-expression table;
+- saves the results in the `results` directory.
 
-Stage 03: differential expression
+A positive `logFC` indicates higher expression in Bone samples relative to Visceral samples.
 
-Script 03_DE_Bone_vs_Visceral.R keeps Bone and Visceral samples, fits a limma model, evaluates the Bone - Visceral contrast, and saves a ranked table containing log-fold changes, P values, and multiple-testing-adjusted P values.
+A negative `logFC` indicates higher expression in Visceral samples relative to Bone samples.
 
-A positive logFC indicates higher expression in Bone samples relative to Visceral samples.
+### Stage 04: WGCNA Module and Trait Analysis
 
-Stage 04: WGCNA
+The `Script 04_WGCNA_modules_traits.R` script:
 
-Script 04_WGCNA_modules_traits.R:
+- transposes the expression matrix to samples × probes;
+- identifies unsuitable samples and probes using `goodSamplesGenes`;
+- evaluates candidate soft-thresholding powers;
+- selects an appropriate soft-thresholding power;
+- constructs a signed co-expression network;
+- detects co-expression modules;
+- merges similar modules;
+- calculates module eigengenes;
+- creates Bone and Visceral trait variables;
+- calculates module–trait correlations;
+- saves WGCNA objects and correlation results.
 
-transposes the expression matrix to samples × probes;
+### Stage 05: Candidate Gene and lncRNA Extraction
 
-removes unsuitable samples or probes using goodSamplesGenes;
+The `Script 05_extract_lncRNA_candidates.R` script:
 
-evaluates candidate soft-thresholding powers;
-
-constructs a signed co-expression network;
-
-detects and merges co-expression modules;
-
-calculates module eigengenes;
-
-correlates module eigengenes with Bone and Visceral traits.
-
-Stage 05: candidate extraction
-
-Script 05_extract_lncRNA_candidates.R combines module assignments, module membership values, differential-expression results, and optional platform annotation. Candidate probes are selected using module–trait association, module membership, log-fold-change, and adjusted-P-value criteria.
+- loads the WGCNA objects;
+- loads the differential-expression results;
+- calculates module-membership values;
+- combines WGCNA and differential-expression statistics;
+- optionally adds gene symbols and transcript biotypes;
+- identifies Bone-associated modules;
+- applies module-membership and differential-expression filters;
+- extracts candidate probes;
+- extracts candidate lncRNAs;
+- checks the key lncRNAs reported in the reference article.
